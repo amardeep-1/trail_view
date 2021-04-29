@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>GPS Data Viewer</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="2750 A3">
+    <meta name="keywords" content="GPS Data Viewer">
+    <meta name="author" content="Amardeep Singh">
+    <!-- Load jquery, bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <!-- Custom CSS End -->
+
+</head>
+
+<body>
+    <h1>GPS Data Viewer</h1>
+    <br>
+    <div class='file-log-panel'>
+        <h3>File Log Panel</h3>
+        This panel displays the list of all GPX files on the server, including all the files uploaded from client and the all files created from scratch by the client.<br>
+        <div class="table-scroll">
+            <table class = "file-log-table" id="file-log-table">
+                <tr>
+                    <th>Filename (click to download)</th>
+                    <th>Version</th>
+                    <th>Creator</th>
+                    <th>Number of Waypoints</th>
+                    <th>Number of Routes</th>
+                    <th>Number of Tracks</th>
+                </tr>
+            </table>
+        </div>
+        <br>
+        <div id="no-file-log">
+            No files<br>
+        </div>
+        <label>Upload valid GPX file:</label>
+        <form id='uploadFormOne' enctype="multipart/form-data" action="/upload" method="post">
+            <div class="form-group-1">
+                <input id="first-upload" type="file" accept=".gpx" name="uploadFile" class="btn btn-secondary">
+                <input id="upload-btn" type='submit' value='Upload' class="btn btn-success">
+            </div>
+        </form>
+
+
+    </div>
+    <br>
+    <div class='gpx-view-panel'>
+        <h3>GPX View Panel</h3>
+        This panel shows components in the currently open file.<br>
+        <label>Choose GPX file: (files without routes and tracks are not selectable)</label>
+        <select name="fileDropOne" class="custom-select mb-3" id="fileDropOne">
+            <option selected>Choose Option</option>
+        </select>
+
+        <div class="table-scroll1">
+            <table class="gpx-view-table" id="gpx-view-table">
+                <tr>
+                    <th>Component</th>
+                    <th>Name</th>
+                    <th>Number of points</th>
+                    <th>Length</th>
+                    <th>Loop</th> 
+                    <th>Other Data</th> 
+                    <th>Rename</th> 
+                </tr>
+            </table>
+        </div>
+
+        <label>RENAME - to rename enter value before clicking rename button in the table:</label>
+        <div id="rename-panel">
+            <input type="text" class="form-control" id="rename-text" placeholder="Enter new element name" value="" required>
+        </div>
+        
+    </div>
+    <br>
+    <div class='other-panel'>
+        <h3>Other Panel</h3>
+        This panel included additional functionality.<br>
+        <div class='create-gpx-panel'>
+            <h4>Create GPX</h4>
+            <h5>Enter data to create an empty GPX file</h5>
+            <label>Filename:</label>
+            <form id="gpx-form">
+                <div class='leftDiv'>
+                    <input type="text" class="form-control" id="createFileName" placeholder="Enter Filename" name="createFileName" required>
+                </div>
+                <div class='rightDiv'>
+                    <div class="input-group-text">.gpx</div>
+                </div>
+                <label>Version:</label>
+                <input type="number" readonly class="form-control" id="createVersion" name="createVersion" value="1.1">
+                <label>Creator:</label>
+                <input type="text" class="form-control" id="createCreator" placeholder="Enter Creator" name="createCreator" required>
+                <br>
+                <button type="submit" class="btn btn-success">Create GPX</button></div>
+            </form>
+
+        </div>
+        <br>
+        <div class='add-route-panel'>
+            <h4>Add Route</h4>
+            <h5>Choose a file and add a new route or add more waypoints to an existing route.</h5>
+            <label>Choose GPX file:</label>
+            
+            <form id="route-form">
+                <select name="fileDropTwo" class="custom-select mb-3" id="fileDropTwo" required></select>
+                <label>Route Name:</label>
+                <input type="text" class="form-control" id="addRouteName" placeholder="Enter Route Name" required>
+                <br>
+                <h6>To enter waypoint data type in the route name it should be added to in the Route Name field and select this checkbox</h6>
+                <h6>To add multiple waypoint to the same route repeat this process</h6>
+                <input type="checkbox" id="addwptbox">
+                <label>ADD WAYPOINT DATA</label> <br>
+                <label>Name:</label>
+                <input type="text" class="form-control" id="addWptName" placeholder="Enter Waypoint Name" disabled>
+                <label>Longitude:</label>
+                <input type="number" class="form-control" id="addLon" placeholder="0.0" min="-180" max="180" disabled>
+                <label>Latitude:</label>
+                <input type="number" class="form-control" id="addLat" placeholder="0.0" min="-90" max="90" disabled>
+                <br>
+                <button type="submit" class="btn btn-success">Add Route</button>
+            </form>            
+        </div>
+        <br>
+        <div class='find-path-panel'>
+            <h4>Find Paths</h4>
+            <h5>Find paths between a start and end point</h5>
+            <form id="path-form">
+                <label>Start Longitude:</label>
+                <input type="text" class="form-control" id="startLon" placeholder="0.0" min="-180" max="180" required>
+                <label>Start Latitude:</label>
+                <input type="text" class="form-control" id="startLat" placeholder="0.0" min="-90" max="90" required>
+                <label>End Longitude:</label>
+                <input type="text" class="form-control" id="endLon" placeholder="0.0" min="-180" max="180" required>
+                <label>End Latitude:</label>
+                <input type="text" class="form-control" id="endLat" placeholder="0.0" min="-90" max="90" required>
+                <label>Delta:</label>
+                <input type="text" class="form-control" id="deltaa" placeholder="0.0"required>
+                <br>
+                <button type="submit" id="find-path-btn" class="btn btn-success">Find Paths</button>
+            </form>
+            <br>
+            <div class="table-scroll">
+                <table id="find-path-table" class = "find-path-table">
+                    <tr>
+                        <th>Component</th>
+                        <th>Name</th>
+                        <th>Number of points</th>
+                        <th>Length</th>
+                        <th>Loop</th>
+                    </tr>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class='db-panel'>
+        <h3>Database Panel</h3>
+        This panel displays database functionality.<br><br>
+        <h4>Login</h4>
+        <h5>Login to the database server for all the functionality</h5>
+        <form id="db-form">
+            <label>Username:</label>
+            <input type="text" class="form-control" id="db-uname" required>
+            <label>Password:</label>
+            <input type="password" class="form-control" id="db-pswd" required>
+            <label>Database Name:</label>
+            <input type="text" class="form-control" id="db-dbname" required>
+            <br>
+            <button type="submit" id="db-login" class="btn btn-success">Login</button>
+        </form>
+        <br>
+        <div id="db-stuff">
+            <h5>Click button store all files:</h5>
+            <button type="button" id="db-storefiles" class="btn btn-success">Store All Files</button>
+            <br>
+            <br>
+            <h5>Click button to see database status:</h5>
+            <button type="button" id="db-status" class="btn btn-success">Database Status</button>
+            <br>
+            <br>
+            <h5>Click button to clear all database data:</h5>
+            <button type="button" id="db-removefiles" class="btn btn-success">Clear All Data</button>
+            <br>
+            <br>
+            <h5>Click button to update database:</h5>
+            <label>Everything has been updating automatically but you can click this button to update the database manually </label><br>
+            <button type="button" id="db-update" class="btn btn-success">Track Route Updates</button>
+            
+            <br>
+            <br>
+
+            <h4>Queries</h4>
+            <h6>Tips: - to refresh display options uncheck and check checkboxes - sorting by length will sort table in ascending order - sorting by name will sort table alphabetically</h6>
+            <h5>1  Display all routes:</h5>
+            <label>Sort by Name or length:</label>
+            <select name="db-table1-select" class="custom-select mb-3" id="db-table1-select">
+                <option value="sort" disabled selected>Sort</option>
+                <option value="route_name">Name</option>
+                <option value="route_len">Length</option>
+            </select>
+
+            <div class="table-scroll1">
+                <table class="db-table1" id="db-table1">
+                    <tr>
+                        <th>Route ID</th>
+                        <th>Name</th>
+                        <th>Length</th>
+                        <th>GPX ID</th>
+                    </tr>
+                </table>
+            </div>
+            <br>
+            <br>
+            <h5>2  Display the routes from a specific file:</h5> 
+            <input type="checkbox" id="db-check2"> <label>Select to display options</label><br>
+            <div id="db-div2">
+                <label>Pick File:</label>
+                <select name="file-table2-select" class="custom-select mb-3" id="file-table2-select"></select>
+                <label>Sort by Name or length:</label>
+                <select name="db-table2-select" class="custom-select mb-3" id="db-table2-select">
+                    <option value="sort" disabled selected>Sort</option>
+                    <option value="route_name">Name</option>
+                    <option value="route_len">Length</option>
+                </select>
+
+                <div class="table-scroll1">
+                    <table class="db-table2" id="db-table2">
+                        <tr>
+                            <th>Route ID</th>
+                            <th>Name</th>
+                            <th>Length</th>
+                            <th>GPX ID</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <br>
+            <br>
+            <h5>3  Display all points of a specific route:</h5> 
+            <input type="checkbox" id="db-check3"> <label>Select to display options</label><br>
+            <div id="db-div3">
+                <label>Pick Route:</label>
+                <select name="file-table3-select" class="custom-select mb-3" id="file-table3-select">
+                    <option disabled selected>Select Route</option>
+                </select>
+                <label>Ordered by point index:</label>
+                <div class="table-scroll1">
+                    <table class="db-table3" id="db-table3">
+                        <tr>
+                            <th>Point Index</th>
+                            <th>Name</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <br>
+            <br>
+            <h5>4  Display all points from a specific file:</h5> 
+            <input type="checkbox" id="db-check4"> <label>Select to display options</label><br>
+            <div id="db-div4">
+                <label>Pick File:</label>
+                <select name="file-table4-select" class="custom-select mb-4" id="file-table4-select">
+                    <option disabled selected>Select File</option>
+                </select>
+                <label>Ordered by point index:</label>
+                <div class="table-scroll1">
+                    <table class="db-table4" id="db-table4">
+                        <tr>
+                            <th>Point Index</th>
+                            <th>Name</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <br>
+            <br>
+            <h5>5  Display the N shortest/longest routes from a specific file:</h5> 
+            <input type="checkbox" id="db-check5"> <label>Select to display options</label><br>
+            <div id="db-div5">
+                <form id="db5-form">
+                    <label>Pick File:</label>
+                    <select required name="file-table5-select" class="custom-select mb-3" id="file-table5-select"></select>
+                    <label>Sort by Name or length:</label>
+                    <select required name="db-table5-select" class="custom-select mb-3" id="db-table5-select">
+                        <option value="sort" disabled selected>Sort</option>
+                        <option value="route_name">Name</option>
+                        <option value="route_len">Length</option>
+                    </select>
+                    <label>Pick shortest or longest routes:</label>
+                    <select required name="op-table5-select" class="custom-select mb-3" id="op-table5-select">
+                        <option value="ASC">Shortest</option>
+                        <option value="DESC">Longest</option>
+                    </select>
+                    <label>Enter N value:</label>
+                    <input type="number" class="form-control" id="n-value" placeholder="0" min="0" required><br>
+                    <button type="submit" id="db5-button" class="btn btn-success">Update Table</button><br><br>
+                </form>
+                <div class="table-scroll1">
+                    <table class="db-table5" id="db-table5">
+                        <tr>
+                            <th>Route Name</th>
+                            <th>Route Length</th>
+                            <th>Filename</th>
+                            <th>Route ID</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <!-- Leave me at the bottom of body -->
+    <script src="/index.js"></script>
+    
+</body>
+</html>
+

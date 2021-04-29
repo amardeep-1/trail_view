@@ -1,0 +1,85 @@
+html {
+    width: 90%;
+    height: 100%;
+    min-height: 100%;
+    margin: 0 auto;
+    font-size: 16px;
+    background-color: lightgrey;
+}
+body {
+    height: 100%;
+    min-height: 100%;
+    line-height: 1.75;
+    background-color: lightgrey;
+}
+a:link:hover {
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    text-decoration: underline;
+    cursor: pointer;
+    cursor: hand;
+}
+input[type=submit], button {
+    cursor: pointer;
+    cursor: hand;
+}
+@media(max-width: 900px) {
+    html {
+        font-size: 14px !important;
+        width: 80% !important;
+    }
+}
+@media(max-width: 480px) {
+    html {
+        font-size: 12px !important;
+        width: 90% !important;
+    }
+}
+@media(max-width: 320px) {
+    html {
+        font-size: 12px !important;
+        width: 100% !important;
+    }
+}
+
+
+
+.table-scroll {
+    max-height: 100px;
+    overflow: auto;
+}
+
+.table-scroll1 {
+    max-height: 130px;
+    overflow: auto;
+}
+
+table {
+    width: 100%;
+    text-align: center;
+    border-radius: 30px;
+}
+
+th {
+    color: white;
+    border-bottom: 2px solid lightgrey;
+}
+
+
+tr:nth-child(even) {background-color: darkgrey;}
+tr:nth-child(odd) {background-color: darkgrey;}
+tr:first-child {background-color: #4CAF50;}
+tr:hover {background-color: lightseagreen;}
+th:hover {background-color: lightseagreen;}
+
+
+.leftDiv {
+    width: 90%; 
+    float:left;
+}
+
+.rightDiv {
+    width: 10%; 
+    float:right;
+}
