@@ -1,8 +1,3 @@
-/*
-A3
-Amardeep Singh
-1079318
-*/
 
 #include <GPXParser.h>
 
