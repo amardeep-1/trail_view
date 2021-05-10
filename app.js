@@ -1,10 +1,5 @@
 'use strict'
 
-/*
-A4
-Amardeep Singh
-1079318
-*/
 
 // C library API
 const ffi = require('ffi-napi');
