@@ -1,7 +1,7 @@
 {
   "name": "a3",
   "version": "1.0.1",
-  "description": "CIS2750 F20 - A3",
+  "description": "trail-view",
   "main": "app.js",
   "scripts": {
     "dev": "nodemon app.js"
