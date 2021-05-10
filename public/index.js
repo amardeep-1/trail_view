@@ -1,11 +1,4 @@
 
-/*
-A4
-Amardeep Singh
-1079318
-*/
-
-
 jQuery(document).ready(function() {
     jQuery('#db-stuff').hide();
 
